@@ -14,18 +14,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
+---
 
-README
-======
-
-This repo contains the following roles:
-- designate-api: designate-api role
-- designate-central: designate-central role
-- designate-mdns: designate-mdns role
-- designate-worker: designate-worker role
-- designate-producer: designate-producer role
-- designate-pool-manager: designate-pool-manager role (Deprecated)
-- designate-zone-manager: designate-zone-manager role (Deprecated)
-
-- powerdns: PowerDNS
-- bind: BIND
+- name: designate-producer | check_upgraded_packages | Check upgraded packages
+  shell: echo "Notify change in designate-producer package dependency - {{ item }}"
+  register: ardana_notify_designate_producer_restart_required
+  when: item in ardana_upgraded_pkgs | default({})
+  with_items: designate_producer_restart_packages

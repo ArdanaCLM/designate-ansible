@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2015-2017 Hewlett Packard Enterprise Development LP
 # (c) Copyright 2017 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -18,6 +18,14 @@
 
 # Configure PowerDNS database
 - hosts: DES-PMG
+  roles:
+    - powerdns-post-configure
+  # All these tasks should be set to run-once
+  tasks:
+    - include: roles/powerdns-post-configure/tasks/db_configure.yml
+      when: ( 'FND_PDN' in verb_hosts )
+
+- hosts: DES-WKR
   roles:
     - powerdns-post-configure
   # All these tasks should be set to run-once

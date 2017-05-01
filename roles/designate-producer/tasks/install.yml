@@ -1,0 +1,62 @@
+#
+# (c) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2017 SUSE LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+# Install designate-producer service
+---
+
+- name: designate-producer | install | Update installed packager cache
+  become: yes
+  install_package:
+    cache: update
+
+- name: designate-producer | install | Install the designate-producer service from the designate venv
+  become: yes
+  install_package:
+    name: designate
+    service: designate-producer
+    state: present
+    activate: act_off
+  register: ardana_notify_designate_producer_venv_changed
+
+- name: "designate-producer | install | Notify for restart on venv change"
+  shell: echo "notify venv change"
+  register: ardana_notify_designate_producer_restart_required
+  when: ardana_notify_designate_producer_venv_changed.changed
+
+- include: ../../designate-common/tasks/_set_directories.yml
+  vars:
+    install_package_result: "{{ ardana_notify_designate_producer_venv_changed }}"
+
+- name: designate-producer | install | Setup designate-producer service
+  become: yes
+  setup_systemd:
+    service: designate-producer
+    user: "{{ designate_system_user }}"
+    group: "{{ designate_system_group }}"
+    cmd: designate-producer
+    args: >
+      --config-file={{ designate_service_conf_dir }}/designate.conf
+      --config-file={{ designate_service_conf_dir }}/producer.conf
+
+- name: designate-producer | install | Set designate-producer service to not start on boot
+  become: yes
+  service:
+    name: designate-producer
+    enabled: no
+
+# This must happen after the install_package, or a path which is meant to be a
+# symlink will be mkdir'd
+- include: ../../designate-common/tasks/install.yml
