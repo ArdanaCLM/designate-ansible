@@ -24,8 +24,6 @@ This repo contains the following roles:
 - designate-mdns: designate-mdns role
 - designate-worker: designate-worker role
 - designate-producer: designate-producer role
-- designate-pool-manager: designate-pool-manager role (Deprecated)
-- designate-zone-manager: designate-zone-manager role (Deprecated)
 
 - powerdns: PowerDNS
 - bind: BIND

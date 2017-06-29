@@ -17,5 +17,4 @@
 ---
 dependencies:
   - role: designate-common
-  - role: designate-pool-manager
   - role: designate-worker
