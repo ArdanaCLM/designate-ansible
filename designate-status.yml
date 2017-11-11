@@ -30,6 +30,20 @@
   tasks:
     - include: roles/designate-central/tasks/status.yml
 
+- hosts: DES-PMG
+  max_fail_percentage: 0
+  roles:
+    - designate-pool-manager
+  tasks:
+    - include: roles/designate-pool-manager/tasks/status.yml
+
+- hosts: DES-ZMG
+  max_fail_percentage: 0
+  roles:
+    - designate-zone-manager
+  tasks:
+    - include: roles/designate-zone-manager/tasks/status.yml
+
 - hosts: DES-WKR
   max_fail_percentage: 0
   roles:

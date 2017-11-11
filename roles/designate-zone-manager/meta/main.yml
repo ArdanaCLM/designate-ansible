@@ -15,15 +15,5 @@
 # under the License.
 #
 ---
-
-- hosts: DES-WKR
-  roles:
-    - designate-worker
-  tasks:
-    - include: roles/designate-worker/tasks/stop-pmg.yml
-
-- hosts: DES-PDR
-  roles:
-    - designate-producer
-  tasks:
-    - include: roles/designate-producer/tasks/stop-zmg.yml
+dependencies:
+  - role: designate-common

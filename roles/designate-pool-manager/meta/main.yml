@@ -14,11 +14,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
-# Stop the designate-producer service
 ---
-- name: designate-producer | stop |
-        stop designate-zone-manager service if running from old implementation
-  become: yes
-  service: name=designate-zone-manager state=stopped
-  register: stop_result
-  ignore_errors: true
+dependencies:
+  - role: designate-common

@@ -17,6 +17,14 @@
 ---
 
 # Configure PowerDNS database
+- hosts: DES-PMG
+  roles:
+    - powerdns-post-configure
+  # All these tasks should be set to run-once
+  tasks:
+    - include: roles/powerdns-post-configure/tasks/db_configure.yml
+      when: ( 'FND_PDN' in verb_hosts )
+
 - hosts: DES-WKR
   roles:
     - powerdns-post-configure

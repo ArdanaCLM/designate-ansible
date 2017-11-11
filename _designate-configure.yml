@@ -28,6 +28,18 @@
   tasks:
     - include: roles/designate-central/tasks/configure.yml
 
+- hosts: DES-PMG
+  roles:
+    - designate-pool-manager
+  tasks:
+    - include: roles/designate-pool-manager/tasks/configure.yml
+
+- hosts: DES-ZMG
+  roles:
+    - designate-zone-manager
+  tasks:
+    - include: roles/designate-zone-manager/tasks/configure.yml
+
 - hosts: DES-WKR
   roles:
     - designate-worker

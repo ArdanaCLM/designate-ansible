@@ -21,9 +21,6 @@
 ---
 - include: designate-status.yml
 
-# Cleanup old implementation if running
-- include: _designate-cleanup-old-impl.yml
-
 # Install and configure services in a new venv
 - include: _designate-install.yml
 - include: _designate-check-upgraded-packages.yml
