@@ -58,4 +58,4 @@ mysql:
   admin_user: "{{ DES_CEN.consumes_FND_MDB.vars.accounts.designate.username }}"
   admin_password: "{{ DES_CEN.consumes_FND_MDB.vars.accounts.designate.password | quote }}"
 
-designate_database_connection: "mysql://{{ mysql.admin_user }}:{{ mysql.admin_password | urlencode }}@{{ mysql.host }}/designate{{ mysql.db_ssl }}"
+designate_database_connection: "mysql+pymysql://{{ mysql.admin_user }}:{{ mysql.admin_password | urlencode }}@{{ mysql.host }}/designate{{ mysql.db_ssl }}"
