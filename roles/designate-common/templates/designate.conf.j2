@@ -22,17 +22,11 @@
 
 # General
 state_path = {{ designate_state_path }}
-lock_path = {{ designate_lock_path }}
 root_helper = sudo designate-rootwrap {{ designate_rootwrap_config }}
 
 # Logging
 debug = False
 log_dir = {{ designate_log_dir }}
-
-# Ceilometer Notifications
-notification_driver = log
-notification_driver = messaging
-notification_topics = notifications
 
 # End of [DEFAULT] section
 
@@ -55,6 +49,19 @@ rabbit_use_ssl = {{ rabbit.rmq_use_ssl }}
 policy_file = {{ designate_policy_file }}
 
 # End of [oslo_policy] section
+
+[oslo_messaging_notifications]
+# Ceilometer Notifications
+driver = log
+driver = messaging
+topics = notifications
+
+# End of [oslo_messaging_notifications] section
+
+[oslo_concurrency]
+lock_path = {{ designate_lock_path }}
+
+# End of [oslo_concurrency] section
 
 [storage:sqlalchemy]
 connection = {{ designate_database_connection }}

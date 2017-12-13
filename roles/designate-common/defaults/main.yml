@@ -32,22 +32,23 @@ designate_log_file_group: adm
 ## [DEFAULT]
 ### General
 designate_state_path: "{{ designate_state_root_dir }}/var/lib/designate"
-designate_lock_path: "{{ designate_state_root_dir }}/var/lib/designate"
 designate_rootwrap_config: "{{ designate_service_conf_dir }}/rootwrap.conf"
 
 ### Logging
 designate_log_dir: "{{ designate_state_root_dir }}/var/log/designate"
 
-## [oslo_messaging_rabbit]
 ### RabbitMQ
 rabbit:
-  hosts: "{% for x in DES_CEN.consumes_FND_RMQ.members.private %}{{ x.host }}:{{ x.port }}{%if not loop.last %},{% endif %}{% endfor %}"
+  hosts: "{% for x in DES.consumes_FND_RMQ.members.private %}{{ x.host }}:{{ x.port }}{%if not loop.last %},{% endif %}{% endfor %}"
   rmq_service_user: "{{ DES.consumes_FND_RMQ.vars.accounts.designate.username }}"
   rmq_service_password: "{{ DES.consumes_FND_RMQ.vars.accounts.designate.password }}"
   rmq_use_ssl: "{{ DES.consumes_FND_RMQ.members.private[0].use_tls }}"
 
 ## [oslo_policy]
 designate_policy_file: "{{ designate_service_conf_dir }}/policy.json"
+
+## [oslo_concurrency]
+designate_lock_path: "{{ designate_state_root_dir }}/var/lib/designate"
 
 ## [storage:sqlalchemy]
 _designate_database_ca_file: "/etc/ssl/certs/ca-certificates.crt"
