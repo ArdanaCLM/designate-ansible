@@ -33,9 +33,11 @@ designate_api_base_uri: "{{ DES_API.advertises.vips.public[0].url }}"
 designate_api_listen: "{{ host.bind.DES_API.admin.ip_address }}:{{ host.bind.DES_API.admin.port }},{{ host.bind.DES_API.internal.ip_address }}:{{ host.bind.DES_API.internal.port }},{{ host.bind.DES_API.public.ip_address }}:{{ host.bind.DES_API.public.port }}"
 
 ## [keystone_authtoken]
-designate_keystone_identity_uri: "{{ DES_CEN.consumes_KEY_API.vips.private[0].url }}"
+designate_keystone_auth_url: "{{ DES_CEN.consumes_KEY_API.vips.private[0].url }}"
 designate_keystone_auth_uri: "{{ DES_CEN.consumes_KEY_API.vips.private[0].url }}"
-designate_admin_tenant_name: "{{ KEY_API.vars.keystone_service_tenant }}"
+designate_admin_project_name: "{{ KEY_API.vars.keystone_service_tenant }}"
+designate_project_domain_name: "{{ KEY_API.vars.keystone_default_domain }}"
+designate_user_domain_name: "{{ KEY_API.vars.keystone_default_domain }}"
 designate_admin_user: "{{ DES_CEN.consumes_KEY_API.vars.keystone_designate_user }}"
 designate_admin_password: "{{ DES_CEN.consumes_KEY_API.vars.keystone_designate_password }}"
 
