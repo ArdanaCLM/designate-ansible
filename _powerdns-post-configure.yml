@@ -20,6 +20,7 @@
 - hosts: DES-PMG
   roles:
     - powerdns-post-configure
+    - designate-pool-manager
   # All these tasks should be set to run-once
   tasks:
     - include: roles/powerdns-post-configure/tasks/db_configure.yml
@@ -28,6 +29,7 @@
 - hosts: DES-WKR
   roles:
     - powerdns-post-configure
+    - designate-worker
   # All these tasks should be set to run-once
   tasks:
     - include: roles/powerdns-post-configure/tasks/db_configure.yml

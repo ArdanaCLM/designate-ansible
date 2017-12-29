@@ -26,7 +26,7 @@
     pool update
     --file {{ designate_pool_manager_conf_dir }}/pools.yaml
   run_once: true
-  ignore_errors: true
+  when: verb_hosts.DES_PMG is defined
 
 - name: designate-cloud-configure | pools_update | Run designate-manage pool update
   become: yes
@@ -38,4 +38,4 @@
     pool update
     --file {{ designate_worker_conf_dir }}/pools.yaml
   run_once: true
-  ignore_errors: true
+  when: verb_hosts.DES_WKR is defined

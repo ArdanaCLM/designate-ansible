@@ -26,7 +26,7 @@
     --config-file {{ designate_pool_manager_conf_dir }}/pool-manager.conf
     powerdns sync {{ powerdns_pool_id }}
   run_once: true
-  ignore_errors: true
+  when: verb_hosts.DES_PMG is defined
 
 - name: powerdns-post-configure | db_configure | Run designate-manage powerdns sync
   become: yes
@@ -37,4 +37,4 @@
     --config-file {{ designate_worker_conf_dir }}/worker.conf
     powerdns sync {{ powerdns_pool_id }}
   run_once: true
-  ignore_errors: true
+  when: verb_hosts.DES_WKR is defined
