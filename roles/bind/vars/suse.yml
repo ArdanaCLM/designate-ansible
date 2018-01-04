@@ -18,3 +18,20 @@
 bind_packages:
     - bind
     - bind-utils
+
+# packages listed here will trigger a restart of the service when updated
+bind_restart_packages:
+    - bind
+
+bind_named_conf_dir: /etc
+bind_zone_file_dir: /var/lib/named
+bind_logging_dir: /var/lib/named/log
+bind_sysconfig_file: /etc/sysconfig/named
+
+bind_main_conf_file: named.conf
+
+bind_conf_group: named
+bind_conf_owner: root
+bind_system_user: named
+
+bind_service_name: named

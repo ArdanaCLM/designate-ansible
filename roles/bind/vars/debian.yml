@@ -19,3 +19,18 @@ bind_packages:
     - dnsutils
     - bind9
     - bind9utils
+
+# packages listed here will trigger a restart of the service when updated
+bind_restart_packages:
+    - bind9
+
+bind_logging_dir: /var/log/bind
+bind_zone_file_dir: /var/cache/bind
+
+bind_main_conf_file: named.conf.options
+
+bind_conf_group: bind
+bind_conf_owner: bind
+bind_system_user: bind
+
+bind_service_name: bind9

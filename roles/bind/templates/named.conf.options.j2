@@ -23,10 +23,10 @@
 // bind service. You may make changes to this file by adding
 // sections/options below.
 
-include "/etc/bind/rndc.key";
+include "{{ bind_conf_dir }}/{{ bind_rndc_key_file }}";
 
 options {
-	directory "/var/cache/bind";
+	directory "{{ bind_zone_file_dir | quote }}";
 
 	allow-new-zones yes;
 	dnssec-validation auto;

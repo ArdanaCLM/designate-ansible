@@ -17,32 +17,55 @@
 # Configure the Bind service
 ---
 
+- name: bind | configure | Write config file
+  become: yes
+  template:
+    src: "named.conf.j2"
+    dest: "{{ bind_named_conf_dir }}/{{ bind_main_conf_file }}"
+    owner: "{{ bind_conf_owner }}"
+    group: "{{ bind_conf_group }}"
+    mode: 0640
+  register: ardana_notify_bind_restart_required
+  when: ansible_os_family | lower == 'suse'
+
 - name: "bind | configure | Write config file"
   become: yes
   template:
     src: "named.conf.options.j2"
     dest: "{{ bind_conf_dir }}/{{ bind_main_conf_file }}"
-    owner: "{{ bind_system_user }}"
-    group: "{{ bind_system_group }}"
+    owner: "{{ bind_conf_owner }}"
+    group: "{{ bind_conf_group }}"
     mode: 0600
   register: ardana_notify_bind_restart_required
+  when: ansible_os_family | lower == 'debian'
 
-- name: "bind | configure-local | Write local config file"
+- name: bind | configure | Write local config file
   become: yes
   template:
     src: "named.conf.local.j2"
     dest: "{{ bind_conf_dir }}/{{ bind_local_conf_file }}"
-    owner: "{{ bind_system_user }}"
-    group: "{{ bind_system_group }}"
+    owner: "{{ bind_conf_owner }}"
+    group: "{{ bind_conf_group }}"
     mode: 0600
   register: ardana_notify_bind_restart_required
+  when: ansible_os_family | lower == 'debian'
+
+- name: bind | configure | Create directory for rndc key
+  become: yes
+  file:
+    path: "{{ bind_conf_dir }}"
+    owner: "{{ bind_conf_owner }}"
+    group: "{{ bind_conf_group }}"
+    mode: 0750
+    state: directory
+  when: ansible_os_family | lower == 'suse'
 
 - name: "bind | configure | Write rndc key file"
   become: yes
   template:
     src: "rndc.key.j2"
     dest: "{{ bind_conf_dir }}/{{ bind_rndc_key_file }}"
-    owner: "{{ bind_system_user }}"
-    group: "{{ bind_system_group }}"
+    owner: "{{ bind_conf_owner }}"
+    group: "{{ bind_conf_group }}"
     mode: 0600
   register: ardana_notify_bind_restart_required
