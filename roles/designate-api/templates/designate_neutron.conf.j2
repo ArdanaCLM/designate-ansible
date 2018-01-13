@@ -20,12 +20,20 @@
 # Changes may be made to this file by the customer.
 
 [designate]
-url = "{{ DES_API.advertises.vips.private[0].url }}/v2"
-admin_auth_url = "{{ DES_CEN.consumes_KEY_API.vips.private[0].url }}"
-admin_username = "{{ DES_CEN.consumes_KEY_API.vars.keystone_designate_user }}"
-admin_password = "{{ DES_CEN.consumes_KEY_API.vars.keystone_designate_password }}"
-admin_tenant_name = "{{ KEY_API.vars.keystone_service_tenant }}"
+url = {{ DES_API.advertises.vips.private[0].url }}/v2
+admin_auth_url = {{ DES_CEN.consumes_KEY_API.vips.private[0].url }}
+admin_username = {{ DES_CEN.consumes_KEY_API.vars.keystone_designate_user }}
+admin_password = {{ DES_CEN.consumes_KEY_API.vars.keystone_designate_password }}
+admin_tenant_name = {{ KEY_API.vars.keystone_service_tenant }}
+auth_type = password
+auth_uri = {{ DES_CEN.consumes_KEY_API.vips.private[0].url }}
+auth_url = {{ DES_CEN.consumes_KEY_API.vips.private[0].url }}
+project_domain_name = {{ KEY_API.vars.keystone_default_domain }}
+user_domain_name = {{ KEY_API.vars.keystone_default_domain }}
+project_name = {{ KEY_API.vars.keystone_service_tenant }}
+username = {{ DES_CEN.consumes_KEY_API.vars.keystone_designate_user }}
+password = {{ DES_CEN.consumes_KEY_API.vars.keystone_designate_password }}
 allow_reverse_dns_lookup = True
 ipv4_ptr_zone_prefix_size = 24
 ipv6_ptr_zone_prefix_size = 116
-ca_cert = /etc/ssl/certs/ca-certificates.crt
+cafile = /etc/ssl/certs/ca-certificates.crt
