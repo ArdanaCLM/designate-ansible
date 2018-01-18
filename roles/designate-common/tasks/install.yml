@@ -38,6 +38,13 @@
     shell: "{{ designate_system_shell }}"
     system: True
 
+- name: designate-common | install | Set Permissions {{ designate_system_home_folder }}
+  become: yes
+  file:
+    path: "{{ designate_system_home_folder }}"
+    state: directory
+    mode: 0750
+
 # directories
 - name: designate-common | install | Create directories
   become: yes
