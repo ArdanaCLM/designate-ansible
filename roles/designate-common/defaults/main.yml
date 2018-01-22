@@ -24,7 +24,8 @@ designate_system_shell: /bin/false
 
 designate_state_root_dir: /
 designate_system_home_folder: "{{ designate_state_root_dir }}/var/lib/designate"
-designate_lock_file_location: "{{ designate_state_root_dir }}/var/lib/designate"
+
+### Logging
 designate_log_file_location: "{{ designate_state_root_dir }}/var/log/designate"
 designate_log_file_group: adm
 
@@ -34,8 +35,6 @@ designate_log_file_group: adm
 designate_state_path: "{{ designate_state_root_dir }}/var/lib/designate"
 designate_rootwrap_config: "{{ designate_service_conf_dir }}/rootwrap.conf"
 
-### Logging
-designate_log_dir: "{{ designate_state_root_dir }}/var/log/designate"
 
 ### RabbitMQ
 rabbit:
@@ -48,7 +47,7 @@ rabbit:
 designate_policy_file: "{{ designate_service_conf_dir }}/policy.json"
 
 ## [oslo_concurrency]
-designate_lock_path: "{{ designate_state_root_dir }}/var/lib/designate"
+designate_lock_path: "{{ designate_state_root_dir }}/var/lib/designate/lock"
 
 ## [storage:sqlalchemy]
 _designate_database_ca_file: "/etc/ssl/certs/ca-certificates.crt"
