@@ -55,7 +55,7 @@
     mode: "{{ item.mode | default('a-rwx,u+rwx,g+rx,o+rx') }}"
     state: directory
   with_items:
-    - file: "{{ designate_lock_file_location }}"
+    - file: "{{ designate_lock_path }}"
     - file: "{{ designate_log_file_location }}"
       group: "{{ designate_system_group }}"
       mode: "0755"
