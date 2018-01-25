@@ -17,20 +17,11 @@
 # This file will contain the default values for the Bind service
 ---
 
-# packages listed here will trigger a restart of the service when updated
-bind_restart_packages:
-  - bind9
-
 bind_conf_dir: /etc/bind
-bind_main_conf_file: named.conf.options
 bind_local_conf_file: named.conf.local
 bind_rndc_key_file: rndc.key
 
 bind_process_name: named
-bind_service_name: bind9
-
-bind_system_group: bind
-bind_system_user: bind
 
 # named.conf.options
 ## options section
@@ -39,7 +30,7 @@ bind_internal_port: "{{ host.bind.FND_BND.internal.port }}"
 bind_public_host: "{{ host.bind.FND_BND_EXT.public.ip_address }}"
 bind_public_port: "{{ host.bind.FND_BND_EXT.public.port }}"
 bind_allow_notify: "{% if FND_BND.consumes_DES_MDN is defined -%}
-                        {%- for mdns in FND_BND.consumes_DES_MDN.members.private -%}{{mdns.ip_address}}:{{mdns.port}}; {% endfor %}
+                        {%- for mdns in FND_BND.consumes_DES_MDN.members.private -%}{{mdns.ip_address}}; {% endfor %}
                     {%- else -%}
                         none;
                     {%- endif %}"
@@ -48,9 +39,6 @@ bind_allow_notify: "{% if FND_BND.consumes_DES_MDN is defined -%}
 bind_rndc_allow: "0.0.0.0/0"
 bind_rndc_host: "{{ host.bind.FND_BND.bind_rndc.ip_address }}"
 bind_rndc_port: "{{ host.bind.FND_BND.bind_rndc.port }}"
-
-# named.conf.local
-bind_logging_dir: /var/log/bind
 
 # rndc.key
 bind_rndc_key: "{{ FND_BND.vars.bind_rndc_key | b64encode }}"

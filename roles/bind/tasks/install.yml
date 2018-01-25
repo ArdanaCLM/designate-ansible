@@ -29,6 +29,6 @@
   file:
     path: "{{ bind_logging_dir }}"
     owner: "{{ bind_system_user }}"
-    group: "{{ bind_system_group }}"
+    group: "{{ bind_conf_group }}"
     mode: "a-rwx,u+rwx,g+rx,o+rx"
     state: directory
