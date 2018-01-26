@@ -1,1 +1,2 @@
 roles/designate-common/files/policy.json
+roles/powerdns-post-configure/files/backend-pdns4-mysql-db.sql

@@ -1,6 +1,7 @@
 {#
 #
 # (c) Copyright 2015-2017 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -42,8 +43,8 @@
 #  also_notifies:
   targets:
 {% if DES_PMG.consumes_FND_PDN is defined %}
-    - type: powerdns
-      description: PowerDNS Cluster
+    - type: pdns4
+      description: PowerDNS4 Cluster
 
       masters:
 {% if DES_PMG.consumes_DES_MDN is defined %}
@@ -57,6 +58,8 @@
         host: {{ DES_PMG.consumes_FND_PDN.members.private[0].ip_address }}
         port: 53
         connection: {{ designate_powerdns_database_connection }}
+        api_endpoint: "http://{{ DES_PMG.consumes_FND_PDN.members.private[0].ip_address }}:8081"
+        api_token: {{ designate_powerdns_api_key }}
 {% endif %}
 
 

@@ -1,6 +1,6 @@
 #
 # (c) Copyright 2015-2017 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017-2018 SUSE LLC
+# (c) Copyright 2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -14,27 +14,32 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
-# Designate Database
+# Designate PowerDNS Database
 ---
 
-- name: powerdns-post-configure | db_configure | Run designate-manage powerdns sync
+- name: powerdns-post-configure | db_configure | Copy the pdns4 SQL file
   become: yes
-  become_user: "{{ designate_system_user }}"
-  command: >
-    {{ designate_pool_manager_bin_dir }}/designate-manage
-    --config-file {{ designate_pool_manager_conf_dir }}/designate.conf
-    --config-file {{ designate_pool_manager_conf_dir }}/pool-manager.conf
-    powerdns sync {{ powerdns_pool_id }}
-  run_once: true
-  when: verb_hosts.DES_PMG is defined
+  copy:
+    src: backend-pdns4-mysql-db.sql
+    dest: /tmp/backend-pdns4-mysql-db.sql
+    owner: root
+    group: root
+    mode: 0740
+  run_once_per: verb_hosts.FND_MDB
 
-- name: powerdns-post-configure | db_configure | Run designate-manage powerdns sync
+- name: powerdns-post-configure | db_configure | Drop designate_pdns DB
   become: yes
-  become_user: "{{ designate_system_user }}"
   command: >
-    {{ designate_worker_bin_dir }}/designate-manage
-    --config-file {{ designate_worker_conf_dir }}/designate.conf
-    --config-file {{ designate_worker_conf_dir }}/worker.conf
-    powerdns sync {{ powerdns_pool_id }}
-  run_once: true
-  when: verb_hosts.DES_WKR is defined
+    mysql -e "DROP DATABASE IF EXISTS designate_pdns;"
+  run_once_per: verb_hosts.FND_MDB
+
+- name: powerdns-post-configure | db_configure | Create designate_pdns DB
+  become: yes
+  command: >
+    mysql -e "CREATE DATABASE designate_pdns CHARACTER SET utf8;"
+  run_once_per: verb_hosts.FND_MDB
+
+- name: powerdns-post-configure | db_configure | Recreate designate_pdns tables
+  become: yes
+  shell: mysql designate_pdns < /tmp/backend-pdns4-mysql-db.sql
+  run_once_per: verb_hosts.FND_MDB

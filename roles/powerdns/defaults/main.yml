@@ -1,6 +1,6 @@
 #
 # (c) Copyright 2015-2017 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -21,7 +21,7 @@ designate_component: powerdns
 # pdns.conf
 ## database config
 designate_powerdns_gmysql_dbname: "{{ FND_PDN.consumes_FND_MDB.vars.databases.powerdns.dbname }}"
-designate_powerdns_gmysql_host: "{{ FND_PDN.consumes_FND_MDB.vips.private[0].host }}"
+designate_powerdns_gmysql_host: "{{ FND_PDN.consumes_FND_MDB.vips.private[0].ip_address }}"
 designate_powerdns_gmysql_user: "{{ FND_PDN.consumes_FND_MDB.vars.accounts.powerdns.username }}"
 designate_powerdns_gmysql_password: "{{ FND_PDN.consumes_FND_MDB.vars.accounts.powerdns.password }}"
 
@@ -31,3 +31,6 @@ designate_powerdns_local_port: "{{ host.bind.FND_PDN.internal.port }}"
 
 # Find me a home
 designate_powerdns_pool_target_id: 00000000-0000-0001-0002-000000000001
+
+# API Key
+designate_powerdns_api_key: "{{ FND_PDN | item('vars.pdns_api_key', default='changeme') }}"
