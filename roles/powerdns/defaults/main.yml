@@ -29,6 +29,9 @@ designate_powerdns_gmysql_password: "{{ FND_PDN.consumes_FND_MDB.vars.accounts.p
 designate_powerdns_local_address: "{{ host.bind.FND_PDN.internal.ip_address }}{% if host.bind.FND_PDN.internal.ip_address != host.bind.FND_PDN_EXT.public.ip_address %},{{ host.bind.FND_PDN_EXT.public.ip_address }}{% endif %}"
 designate_powerdns_local_port: "{{ host.bind.FND_PDN.internal.port }}"
 
+# pdns webserver address
+designate_powerdns_webserver_address: "{{ host.bind.FND_PDN.internal.ip_address }}"
+
 # Find me a home
 designate_powerdns_pool_target_id: 00000000-0000-0001-0002-000000000001
 
