@@ -28,6 +28,13 @@ root_helper = sudo designate-rootwrap {{ designate_rootwrap_config }}
 debug = False
 log_dir = {{ designate_log_file_location }}
 
+# Quota
+quota_zones = 100
+quota_zone_recordsets = 500
+quota_zone_records = 500
+quota_recordset_records = 20
+quota_api_export_size = 1000
+
 # End of [DEFAULT] section
 
 [oslo_messaging_rabbit]
