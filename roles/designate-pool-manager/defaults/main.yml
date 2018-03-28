@@ -39,7 +39,7 @@ designate_pool_manager_bin_dir: "{{ designate_component | bin_dir() }}"
 ## [service:pool_manager]
 designate_pool_id: 794ccc2c-d751-44fe-b57f-8894c9f5c842
 
-_designate_powerdns_database_ca_file: "/etc/ssl/certs/ca-certificates.crt"
+_designate_powerdns_database_ca_file: "{{ trusted_ca_bundle }}"
 _designate_powerdns_database_ssl: "{% if ( 'FND_PDN' in verb_hosts ) and FND_PDN.consumes_FND_MDB.vips.private[0].use_tls %}?ssl_ca={{ _designate_powerdns_database_ca_file }}{% endif %}"
 
 ## [pool_target:*]

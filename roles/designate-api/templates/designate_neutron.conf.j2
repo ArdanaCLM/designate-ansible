@@ -36,4 +36,4 @@ password = {{ DES_CEN.consumes_KEY_API.vars.keystone_designate_password }}
 allow_reverse_dns_lookup = True
 ipv4_ptr_zone_prefix_size = 24
 ipv6_ptr_zone_prefix_size = 116
-cafile = /etc/ssl/certs/ca-certificates.crt
+cafile = {{ trusted_ca_bundle }}

@@ -50,7 +50,7 @@ designate_policy_file: "{{ designate_service_conf_dir }}/policy.json"
 designate_lock_path: "{{ designate_state_root_dir }}/var/lib/designate/lock"
 
 ## [storage:sqlalchemy]
-_designate_database_ca_file: "/etc/ssl/certs/ca-certificates.crt"
+_designate_database_ca_file: "{{ trusted_ca_bundle }}"
 ### mysql
 mysql:
   db_ssl: "{% if DES_CEN.consumes_FND_MDB.vips.private[0].use_tls %}?ssl_ca={{ _designate_database_ca_file }}{% endif %}"

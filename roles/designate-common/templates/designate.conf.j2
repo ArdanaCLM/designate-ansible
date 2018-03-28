@@ -76,7 +76,7 @@ connection = {{ designate_database_connection }}
 # End of [storage:sqlalchemy] section
 
 [ssl]
-ca_file = /etc/ssl/certs/ca-certificates.crt
+ca_file = {{ trusted_ca_bundle }}
 
 # End of [ssl] section
 

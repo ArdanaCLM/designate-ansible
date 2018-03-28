@@ -46,7 +46,7 @@ enabled_extensions_admin = quotas, zones
 
 
 [keystone_authtoken]
-cafile = /etc/ssl/certs/ca-certificates.crt
+cafile = {{ trusted_ca_bundle }}
 auth_type = password
 auth_url = {{ designate_keystone_auth_url }}
 auth_uri = {{ designate_keystone_auth_uri }}
