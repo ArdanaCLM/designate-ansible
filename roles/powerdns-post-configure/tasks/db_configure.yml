@@ -17,6 +17,54 @@
 # Designate PowerDNS Database
 ---
 
+# Note designate PowerDNS backend DB schema has changed for
+# pdns4 backend driver corresponding to PowerDNS v4+.
+# This change is not handled by DB migration scripts.
+# Upstream bug: https://bugs.launchpad.net/designate/+bug/1746836
+# Our strategy mirrors what is being done in devstack.
+# On finding old schema we remove the tables and recreate it.
+
+- name: powerdns-post-configure | db_configure | Check if DB is empty
+  become: yes
+  command: mysql -e
+          "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+          WHERE TABLE_SCHEMA = 'designate_pdns';"
+  register: is_db_empty_result
+  ignore_errors: True
+
+- name: powerdns-post-configure | db_configure | Set fact db_empty
+  set_fact:
+    designate_pdns_db_empty: "{{ is_db_empty_result.stdout_lines[1] == '0' }}"
+
+# Note: column 'designate_id' only exists in Old DB Schema
+- name: powerdns-post-configure | db_configure | Check if DB has old schema
+  become: yes
+  command: mysql -e
+          "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+          WHERE TABLE_SCHEMA = 'designate_pdns' AND
+          TABLE_NAME = 'domains' AND COLUMN_NAME = 'designate_id';"
+  register: is_old_schema_result
+  ignore_errors: True
+
+- name: powerdns-post-configure | db_configure | Set fact old_schema
+  set_fact:
+    designate_pdns_old_schema:
+      "{{ is_old_schema_result.stdout_lines[1] == '1' }}"
+
+- name: powerdns-post-configure | db_configure | Drop designate_pdns DB tables
+  become: yes
+  command: mysql designate_pdns -e "DROP TABLE IF EXISTS {{ item }};"
+  with_items:
+    - comments
+    - cryptokeys
+    - domainmetadata
+    - domains
+    - records
+    - supermasters
+    - tsigkeys
+  run_once_per: verb_hosts.FND_MDB
+  when: designate_pdns_old_schema|bool
+
 - name: powerdns-post-configure | db_configure | Copy the pdns4 SQL file
   become: yes
   copy:
@@ -26,20 +74,10 @@
     group: root
     mode: 0740
   run_once_per: verb_hosts.FND_MDB
-
-- name: powerdns-post-configure | db_configure | Drop designate_pdns DB
-  become: yes
-  command: >
-    mysql -e "DROP DATABASE IF EXISTS designate_pdns;"
-  run_once_per: verb_hosts.FND_MDB
-
-- name: powerdns-post-configure | db_configure | Create designate_pdns DB
-  become: yes
-  command: >
-    mysql -e "CREATE DATABASE designate_pdns CHARACTER SET utf8;"
-  run_once_per: verb_hosts.FND_MDB
+  when: designate_pdns_old_schema|bool or designate_pdns_db_empty|bool
 
 - name: powerdns-post-configure | db_configure | Recreate designate_pdns tables
   become: yes
   shell: mysql designate_pdns < /tmp/backend-pdns4-mysql-db.sql
   run_once_per: verb_hosts.FND_MDB
+  when: designate_pdns_old_schema|bool or designate_pdns_db_empty|bool
