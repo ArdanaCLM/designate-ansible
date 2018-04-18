@@ -58,10 +58,10 @@
     - comments
     - cryptokeys
     - domainmetadata
-    - domains
     - records
     - supermasters
     - tsigkeys
+    - domains
   run_once_per: verb_hosts.FND_MDB
   when: designate_pdns_old_schema|bool
 
