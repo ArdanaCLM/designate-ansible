@@ -17,19 +17,9 @@
 ---
 
 # Configure PowerDNS database
-- hosts: DES-PMG
+- hosts: FND-MDB
   roles:
     - powerdns-post-configure
-    - designate-pool-manager
-  # All these tasks should be set to run-once
-  tasks:
-    - include: roles/powerdns-post-configure/tasks/db_configure.yml
-      when: ( 'FND_PDN' in verb_hosts )
-
-- hosts: DES-WKR
-  roles:
-    - powerdns-post-configure
-    - designate-worker
   # All these tasks should be set to run-once
   tasks:
     - include: roles/powerdns-post-configure/tasks/db_configure.yml
