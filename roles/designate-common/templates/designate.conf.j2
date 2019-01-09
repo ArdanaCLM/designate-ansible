@@ -80,5 +80,11 @@ ca_file = {{ trusted_ca_bundle }}
 
 # End of [ssl] section
 
+{% if DES_WKR is defined %}
+[service:worker]
+enabled = True
+# End of [service:worker] section
+{% endif %}
+
 ### End of File ###
 ## Do NOT put anything after this line ##
