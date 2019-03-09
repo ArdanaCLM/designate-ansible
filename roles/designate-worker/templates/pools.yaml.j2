@@ -1,7 +1,7 @@
 {#
 #
 # (c) Copyright 2017 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2017-2019 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -43,8 +43,8 @@
 #  also_notifies:
   targets:
 {% if DES_WKR.consumes_FND_PDN is defined %}
-    - type: powerdns
-      description: PowerDNS Cluster
+    - type: pdns4
+      description: PowerDNS4 Cluster
 
       masters:
 {% if DES_WKR.consumes_DES_MDN is defined %}
@@ -57,7 +57,8 @@
       options:
         host: {{ DES_WKR.consumes_FND_PDN.members.private[0].ip_address }}
         port: 53
-        connection: {{ designate_powerdns_database_connection }}
+        api_endpoint: http://{{ host.bind.FND_PDN.internal.ip_address }}:8081
+        api_token: {{ FND_PDN | item('vars.pdns_api_key', default='changeme') }}
 {% endif %}
 
 
