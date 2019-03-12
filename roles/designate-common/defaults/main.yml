@@ -42,6 +42,12 @@ rabbit:
   rmq_service_user: "{{ DES.consumes_FND_RMQ.vars.accounts.designate.username }}"
   rmq_service_password: "{{ DES.consumes_FND_RMQ.vars.accounts.designate.password }}"
   rmq_use_ssl: "{{ DES.consumes_FND_RMQ.members.private[0].use_tls }}"
+rabbit_hosts_port_list_url: >-
+  {%- for x in DES.consumes_FND_RMQ.members.private -%}
+  {{- rabbit.rmq_service_user -}}:{{- rabbit.rmq_service_password -}}@{{- x.host -}}:{{- x.port -}}
+  {%- if not loop.last -%},{%- endif -%}
+  {%- endfor -%}
+rabbit_transport_url: "rabbit://{{ rabbit_hosts_port_list_url }}//"
 
 ## [oslo_policy]
 designate_policy_file: "{{ designate_service_conf_dir }}/policy.json"
