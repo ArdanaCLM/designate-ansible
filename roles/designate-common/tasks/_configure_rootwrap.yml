@@ -25,8 +25,8 @@
 # this has to be in the /etc/sudoers.d of the host - not the venv!
 - name: designate-common | _configure_rootwrap | Setup designate user to allow sudo to run designate-rootwrap without password
   become: yes
-  copy:
-    src: designate-rootwrap
+  template:
+    src: designate-rootwrap.j2
     dest: /etc/sudoers.d/designate-rootwrap
     owner: root
     group: root
