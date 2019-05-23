@@ -48,7 +48,7 @@
   become: yes
   file:
     path: "{{ designate_service_conf_dir }}/rootwrap.d"
-    owner: "{{ designate_system_user }}"
+    owner: root
     group: root
     mode: 0755
     state: directory
@@ -59,9 +59,9 @@
   template:
     src: "{{ item }}.j2"
     dest: "{{ designate_service_conf_dir }}/{{ item }}"
-    owner: "{{ designate_system_user }}"
-    group: "{{ designate_system_group }}"
-    mode: 0640
+    owner: "root"
+    group: "root"
+    mode: 0644
   with_items:
     - rootwrap.conf
   register: apply_template_result
@@ -71,8 +71,8 @@
   copy:
     src: "{{ item }}"
     dest: "{{ designate_service_conf_dir }}/rootwrap.d"
-    owner: "{{ designate_system_user }}"
-    group: "{{ designate_system_group }}"
+    owner: "root"
+    group: "root"
     mode: 0644
   with_items:
     designate_rootwrap_filters
