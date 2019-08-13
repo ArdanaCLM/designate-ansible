@@ -57,7 +57,7 @@
       options:
         host: {{ DES_WKR.consumes_FND_PDN.members.private[0].ip_address }}
         port: 53
-        api_endpoint: http://{{ host.bind.FND_PDN.internal.ip_address }}:8081
+        api_endpoint: http://{{ host.bind.FND_PDN.internal.ip_address | ipwrap }}:8081
         api_token: {{ FND_PDN | item('vars.pdns_api_key', default='changeme') }}
 {% endif %}
 

@@ -58,7 +58,7 @@
         host: {{ DES_PMG.consumes_FND_PDN.members.private[0].ip_address }}
         port: 53
         connection: {{ designate_powerdns_database_connection }}
-        api_endpoint: "http://{{ DES_PMG.consumes_FND_PDN.members.private[0].ip_address }}:8081"
+        api_endpoint: "http://{{ DES_PMG.consumes_FND_PDN.members.private[0].ip_address | ipwrap }}:8081"
         api_token: {{ designate_powerdns_api_key }}
 {% endif %}
 

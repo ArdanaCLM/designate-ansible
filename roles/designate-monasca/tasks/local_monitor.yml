@@ -20,4 +20,4 @@
   become: yes
   monasca_agent_plugin:
     name: "httpcheck"
-    args: "url=http://{{ host.bind.DES_API.internal.ip_address }}:{{ host.bind.DES_API.internal.port }}/ dimensions=service:dns,component:designate-api,monitored_host_type:instance,api_endpoint:internal"
+    args: "url=http://{{ host.bind.DES_API.internal.ip_address | ipwrap }}:{{ host.bind.DES_API.internal.port }}/ dimensions=service:dns,component:designate-api,monitored_host_type:instance,api_endpoint:internal"
