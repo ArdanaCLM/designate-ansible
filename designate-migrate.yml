@@ -1,0 +1,43 @@
+#
+# (c) Copyright 2020 SUSE LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+- hosts: DES-API
+  tasks:
+    - name: Check if input model changes are done for zone mgr/pool mgr
+      fail:
+       msg: |
+         Customer has not made the necessary changes to input model
+         Please remove zone-manager and pool-manager from input model
+      when: >-
+               verb_hosts.DES_ZMG is defined or
+               verb_hosts.DES_PMG is defined
+
+    - name: Check if input model changes are done for worker/producer
+      fail:
+       msg: |
+         Customer has not made the necessary changes to input model
+         Please add worker and producer services in input model
+      when: >-
+               (verb_hosts.DES_WKR | default([]) | length == 0) or
+               (verb_hosts.DES_PDR | default([]) | length == 0)
+
+- include: _designate-install-migrate.yml
+- include: _designate-configure-migrate.yml
+- include: _designate-post-configure.yml
+- include: designate-start-migrate.yml
+- include: designate-cloud-configure-migrate.yml
+- include: designate-migrate-deprecations.yml
